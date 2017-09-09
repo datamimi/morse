@@ -1,27 +1,26 @@
-// HIGH and LOW are printed to screen when morse key is pushed
+// DASH and DOT are printed to command line when morse key is pushed
 
-//const int led = 13;
-const int buttonPin = 7;  // Morse key is connected to Pin 7
-
+const int led = 13; // led is connected to pin 13
+const int keyPin = 7;  // morse key is connected to pin 7
 void setup()
 {
-  //pinMode(led, OUTPUT);       // LED
-  pinMode(buttonPin, INPUT_PULLUP); // configure the pin connected to the Morse key as a pullup
-}
+  pinMode(led, OUTPUT);       // LED
+  pinMode(keyPin, INPUT_PULLUP); // configure the pin connected to the morse key as a pullup
+} // end of setup
 
 void loop()
 {
-  if (digitalRead(buttonPin)) {
-    // D7 pin is high due to pullup resistor
+  // start of IF loop
+  if (digitalRead(keyPin)) { // if input is HIGH
+
+    Serial.println ("HIGH");
     digitalWrite(led, LOW);   // LED on
-    delay(80);                  // Slow blink
-    digitalWrite(led, HIGH);  // LED off
-    delay(80);
-  } else {
-    // D7 pin is low due to pushbutton pressed
-    digitalWrite(led, LOW);   // LED on
-    delay(400);                   // Fast blink
-    digitalWrite(led, HIGH);  // LED off
-    delay(400);
-  }
-}
+    
+  } else if (!digitalRead(keyPin)) { // if input is LOW
+      
+      Serial.println ("LOW");
+      digitalWrite(led, HIGH);   // LED off
+    
+  } // end of IF loop
+  
+} // end of loop
