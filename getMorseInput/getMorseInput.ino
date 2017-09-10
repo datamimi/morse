@@ -3,8 +3,9 @@
 const int led = 13; // led is connected to pin 13
 const int keyPin = 7;  // morse key is connected to pin 7
 const unsigned long debounceWaitTime = 10; // time delay in ms for debounce smoothing function
-const unsigned long dashThresh = 200; // time threshold to differentiate dots from dashes
-const unsigned long pauseThresh = 500; // time threshold to differentiate letter gaps
+const unsigned long dashThresh = 200; // time threshold in ms to differentiate dots from dashes
+const unsigned long letterThresh = 300; // time threshold in ms to differentiate letter gaps
+const unsigned long wordThresh = 3000; // time threshold in ms to differentiate word gaps
 
 int modelState = 0; // initialise model state to 0 or LOW
 int inputSignal = 0; // initialise physical state to 0 or LOW
@@ -49,9 +50,14 @@ void keyDown()
     digitalWrite(led, HIGH); // switch LED on
     pauseDuration = downTime-upTime;
 
-    if (pauseDuration>pauseThresh){ // if the preceding pause was long enough, evaluate the previous inputs as a single letter
+    if (pauseDuration>=letterThresh and pauseDuration<wordThresh){ // if the preceding pause was long enough, evaluate the previous inputs as a single letter
 
       evaluateLetter();
+      
+    } else if (pauseDuration >= wordThresh) {
+
+      evaluateLetter();
+      newWord();
       
     }
 }
@@ -83,4 +89,10 @@ void evaluateLetter()
 {
   Serial.println("NEW LETTER");
 }
+
+void newWord()
+{
+  Serial.println("NEW WORD");
+}
+
 
