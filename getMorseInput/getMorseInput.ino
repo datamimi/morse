@@ -9,7 +9,10 @@ const unsigned long wordThresh = 3000; // time threshold in ms to differentiate 
 
 int modelState = 0; // initialise model state to 0 or LOW
 int inputSignal = 0; // initialise physical state to 0 or LOW
-int inputCounter = 0; // initialise which input number we're currently on
+
+String inputString = ""; // initialise input string
+String alphabetString[] = {"a","b","c","d", "e", "f", "g", "h", "i", "j", "k", "l", "m","n","o","p","q","r","s","t","u","v","w","q","y","z","?"}; 
+String morseString[] = {".-", "-..." , "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.."};
 
 unsigned long downTime = 0; // records the start time of state change
 unsigned long upTime = 0; // records the end time of state change
@@ -70,9 +73,9 @@ void keyUp()
     digitalWrite(led, LOW); // switch LED off
 
     if (changeDuration>0 and changeDuration<dashThresh){
-      Serial.println("DOT");
+      inputString = inputString + ".";
     } else if (changeDuration>=dashThresh) {
-      Serial.println("DASH");
+      inputString = inputString + "-";
     }
     
 }
@@ -87,12 +90,21 @@ void deBounce()
 
 void evaluateLetter()
 {
-  Serial.println("NEW LETTER");
+//  Serial.println(inputString);
+  
+  for (int i=0; i<26; i++) {
+   if (inputString == morseString[i]) {
+     Serial.println(alphabetString[i]);
+     break;
+   }
+  }
+   
+  inputString = ""; // re-initialise inputString ready for new letter
 }
 
 void newWord()
 {
-  Serial.println("NEW WORD");
+  Serial.println(" ");
 }
 
 
