@@ -2,17 +2,18 @@
 
 const int led = 13; // led is connected to pin 13
 const int keyPin = 7;  // morse key is connected to pin 7
-const unsigned long debounceWaitTime = 5; // time delay in ms for debounce smoothing function
-const unsigned long newLetterWaitTime = 500; 
+const unsigned long debounceWaitTime = 10; // time delay in ms for debounce smoothing function
+const unsigned long dashThresh = 200; // time threshold to differentiate dots from dashes
+const unsigned long pauseThresh = 500; // time threshold to differentiate letter gaps
 
 int modelState = 0; // initialise model state to 0 or LOW
 int inputSignal = 0; // initialise physical state to 0 or LOW
-int inputList[5]; // initialise a list to hold dots and dashes for one letter; the max size of one letter is 5 units
 int inputCounter = 0; // initialise which input number we're currently on
 
 unsigned long downTime = 0; // records the start time of state change
 unsigned long upTime = 0; // records the end time of state change
 unsigned long changeDuration = 0; // records the duration of state change
+unsigned long pauseDuration = 0; // records the duration of the last pause
 
 void setup()
 {
@@ -46,11 +47,13 @@ void keyDown()
     modelState = 1; // update modelState
     downTime = millis();
     digitalWrite(led, HIGH); // switch LED on
+    pauseDuration = downTime-upTime;
 
-    if (downTime-upTime>newLetterWaitTime){ // evaluate the stored inputs as a whole letter
-      Serial.println(inputList);
+    if (pauseDuration>pauseThresh){ // if the preceding pause was long enough, evaluate the previous inputs as a single letter
+
+      evaluateLetter();
+      
     }
-    
 }
 
 void keyUp()
@@ -60,14 +63,10 @@ void keyUp()
     changeDuration = upTime-downTime; 
     digitalWrite(led, LOW); // switch LED off
 
-    if (changeDuration>0 and changeDuration<100){
+    if (changeDuration>0 and changeDuration<dashThresh){
       Serial.println("DOT");
-      inputList[inputCounter]=1;
-      inputCounter++;
-    } else if (changeDuration>=100) {
+    } else if (changeDuration>=dashThresh) {
       Serial.println("DASH");
-      inputList[inputCounter]=2;
-      inputCounter++;
     }
     
 }
@@ -78,5 +77,10 @@ void deBounce()
   if (inputSignal==1 and modelState==0){ // if the input signal is still 1, only then update the model
        keyDown();
   }
+}
+
+void evaluateLetter()
+{
+  Serial.println("NEW LETTER");
 }
 
