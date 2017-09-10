@@ -2,7 +2,10 @@
 
 const int led = 13; // led is connected to pin 13
 const int keyPin = 7;  // morse key is connected to pin 7
+<<<<<<< HEAD
 const unsigned long debounceWaitTime = 5; // time delay in ms for debounce smoothing function
+=======
+>>>>>>> 25be6d77af33f0b2388534941e123807383e30a9
 
 int modelState = 0; // initialise model state to 0 or LOW
 int inputSignal = 0; // initialise physical state to 0 or LOW
@@ -20,13 +23,26 @@ void setup()
 void loop()
 {
   inputSignal =! digitalRead(keyPin);
+<<<<<<< HEAD
+=======
+//  Serial.println("MODEL STATE:");
+//  Serial.println(modelState);
+//  delay(500);
+//  Serial.println("INPUT SIGNAL:");
+//  Serial.println(inputSignal);
+//  delay(500);
+>>>>>>> 25be6d77af33f0b2388534941e123807383e30a9
   
   // start of IF loop
   if (inputSignal==0 and modelState==0) { // if both physical state and model state are 0, do nothing
 
   } else if (inputSignal==1 and modelState==0) { // if input from key has gone to 1 and model is still 0, update model
 
+<<<<<<< HEAD
     deBounce();
+=======
+    keyDown();
+>>>>>>> 25be6d77af33f0b2388534941e123807383e30a9
 
   } else if (inputSignal==1 and modelState==1) { // if both physical state and model are 1, do nothing
 
@@ -53,6 +69,7 @@ void keyUp()
     digitalWrite(led, LOW); // switch LED off
     Serial.println(changeDuration);
 }
+<<<<<<< HEAD
 
 void deBounce()
 {
@@ -62,3 +79,5 @@ void deBounce()
   }
 }
 
+=======
+>>>>>>> 25be6d77af33f0b2388534941e123807383e30a9
