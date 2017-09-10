@@ -155,7 +155,7 @@ void evaluateLetter()
   } else if (inputString=="-"){
       Keyboard.press(KEY_T);
       Keyboard.release(KEY_T);
-  } else if (inputString=="..-"){
+  } else if `(inputString=="..-"){
       Keyboard.press(KEY_U);
       Keyboard.release(KEY_U);
   } else if (inputString=="...-"){
@@ -174,14 +174,11 @@ void evaluateLetter()
       Keyboard.press(KEY_Z);
       Keyboard.release(KEY_Z);
   } else { 
-      Keyboard.press(KEY_TILDE);
-      Keyboard.release(KEY_TILDE);
+      Keyboard.press(KEY_MINUS);
+      Keyboard.release(KEY_MINUS);
   }
 
   inputString = ""; // re-initialise inputString ready for new letter
 
 }
-   
-
-  
 
