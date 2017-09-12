@@ -7,15 +7,18 @@ const int keyPin = 7;  // morse key is connected to pin 7
 Bounce morseKey = Bounce(keyPin, 10);  // 10 ms debounce
 
 const unsigned long dashThresh = 150; // time threshold in ms to differentiate dots from dashes
-const unsigned long letterThresh = 300; // time threshold in ms to differentiate letter gaps
+const unsigned long letterThresh = 500; // time threshold in ms to differentiate letter gaps
 const unsigned long wordThresh = 3000; // time threshold in ms to differentiate word gaps
 
 String inputString = ""; // initialise input string
 
 unsigned long downTime = 0; // records the start time of state change
 unsigned long upTime = 0; // records the end time of state change
+unsigned long timeNow = 0; // records the current time 
 unsigned long changeDuration = 0; // records the duration of state change
 unsigned long pauseDuration = 0; // records the duration of the last pause
+
+int pauseFlag = 0; // initilise the flag to indicate whether a pause has already been evaluated
 
 void setup()
 {
@@ -25,7 +28,8 @@ void setup()
 
 void loop()
 { 
-    // start of IF loop
+  checkPause();
+  // start of IF loop
   if (morseKey.update()){
     
     if (morseKey.risingEdge()) { // if input from key has gone to 1 and model is still 0, update model
@@ -56,25 +60,32 @@ void keyUp()
     if (changeDuration>0 and changeDuration<dashThresh){
       inputString = inputString + ".";
       Serial.println("DOT");
+
     } else if (changeDuration>=dashThresh) {
       inputString = inputString + "-";
       Serial.println("DASH");
+
     }
+
+    pauseFlag = 1;
     
 }
 
 void checkPause()
-{
-    pauseDuration = millis()-upTime;
+{   
+    timeNow = millis();
+    pauseDuration = timeNow-upTime;
 
-    if (pauseDuration>=letterThresh and pauseDuration<wordThresh){ // if the preceding pause was long enough, evaluate the previous inputs as a single letter
+    if (pauseDuration>=letterThresh and pauseDuration<wordThresh and pauseFlag){ // if the preceding pause was long enough AND a pause hasn't just been evaluated, evaluate the previous inputs as a single letter
 
       evaluateLetter();
+      pauseFlag = 0;
       
-    } else if (pauseDuration >= wordThresh) {
+    } else if (pauseDuration >= wordThresh and pauseFlag) {
 
       evaluateLetter();
       newWord();
+      pauseFlag = 0; 
       
     }
 }
@@ -174,4 +185,6 @@ void evaluateLetter()
   inputString = ""; // re-initialise inputString ready for new letter
 
 }
+
+
 
