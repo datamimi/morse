@@ -177,6 +177,36 @@ void evaluateLetter()
   } else if (inputString=="--.."){
       Keyboard.press(KEY_Z);
       Keyboard.release(KEY_Z);
+  } else if (inputString==".----"){
+      Keyboard.press(KEY_1);
+      Keyboard.release(KEY_1);
+  } else if (inputString=="..---"){
+      Keyboard.press(KEY_2);
+      Keyboard.release(KEY_2);
+  } else if (inputString=="...--"){
+      Keyboard.press(KEY_3);
+      Keyboard.release(KEY_3);
+  } else if (inputString=="....-"){
+      Keyboard.press(KEY_4);
+      Keyboard.release(KEY_4);
+  } else if (inputString=="....."){
+      Keyboard.press(KEY_5);
+      Keyboard.release(KEY_5);
+  } else if (inputString=="-...."){
+      Keyboard.press(KEY_6);
+      Keyboard.release(KEY_6);
+  } else if (inputString=="--..."){
+      Keyboard.press(KEY_7);
+      Keyboard.release(KEY_7);
+  } else if (inputString=="---.."){
+      Keyboard.press(KEY_8);
+      Keyboard.release(KEY_8);
+  } else if (inputString=="----."){
+      Keyboard.press(KEY_9);
+      Keyboard.release(KEY_9);
+  } else if (inputString=="-----"){
+      Keyboard.press(KEY_0);
+      Keyboard.release(KEY_0);
   } else { 
       Keyboard.press(KEY_MINUS);
       Keyboard.release(KEY_MINUS);
