@@ -1,14 +1,14 @@
-// DASH and DOT are printed to command line when morse key is pushed
+// Turns Morse key into USB keyboard
+
+#include <Bounce.h> // include de-bounce library
 
 const int led = 13; // led is connected to pin 13
 const int keyPin = 7;  // morse key is connected to pin 7
-const unsigned long debounceWaitTime = 10; // time delay in ms for debounce smoothing function
-const unsigned long dashThresh = 200; // time threshold in ms to differentiate dots from dashes
+Bounce morseKey = Bounce(keyPin, 10);  // 10 ms debounce
+
+const unsigned long dashThresh = 150; // time threshold in ms to differentiate dots from dashes
 const unsigned long letterThresh = 300; // time threshold in ms to differentiate letter gaps
 const unsigned long wordThresh = 3000; // time threshold in ms to differentiate word gaps
-
-int modelState = 0; // initialise model state to 0 or LOW
-int inputSignal = 0; // initialise physical state to 0 or LOW
 
 String inputString = ""; // initialise input string
 
@@ -24,32 +24,48 @@ void setup()
 } // end of setup
 
 void loop()
-{
-  inputSignal =! digitalRead(keyPin);
+{ 
+    // start of IF loop
+  if (morseKey.update()){
+    
+    if (morseKey.risingEdge()) { // if input from key has gone to 1 and model is still 0, update model
+
+      keyUp();
   
-  // start of IF loop
-  if (inputSignal==0 and modelState==0) { // if both physical state and model state are 0, do nothing
-
-  } else if (inputSignal==1 and modelState==0) { // if input from key has gone to 1 and model is still 0, update model
-
-    deBounce();
-
-  } else if (inputSignal==1 and modelState==1) { // if both physical state and model are 1, do nothing
-
-  } else if (inputSignal==0 and modelState==1) { // if input from key has gone to 0 and model is still 1, update model
-
-    keyUp();
-
-  }
+    } else if (morseKey.fallingEdge()) { // if input from key has gone to 0 and model is still 1, update model
+  
+      keyDown();
+  
+    }
+  } // end of if update loop
   
 } // end of loop
 
 void keyDown()
 {
-    modelState = 1; // update modelState
     downTime = millis();
     digitalWrite(led, HIGH); // switch LED on
-    pauseDuration = downTime-upTime;
+}
+
+void keyUp()
+{
+    upTime = millis();
+    changeDuration = upTime-downTime; 
+    digitalWrite(led, LOW); // switch LED off
+
+    if (changeDuration>0 and changeDuration<dashThresh){
+      inputString = inputString + ".";
+      Serial.println("DOT");
+    } else if (changeDuration>=dashThresh) {
+      inputString = inputString + "-";
+      Serial.println("DASH");
+    }
+    
+}
+
+void checkPause()
+{
+    pauseDuration = millis()-upTime;
 
     if (pauseDuration>=letterThresh and pauseDuration<wordThresh){ // if the preceding pause was long enough, evaluate the previous inputs as a single letter
 
@@ -61,29 +77,6 @@ void keyDown()
       newWord();
       
     }
-}
-
-void keyUp()
-{
-    modelState = 0; // update modelState
-    upTime = millis();
-    changeDuration = upTime-downTime; 
-    digitalWrite(led, LOW); // switch LED off
-
-    if (changeDuration>0 and changeDuration<dashThresh){
-      inputString = inputString + ".";
-    } else if (changeDuration>=dashThresh) {
-      inputString = inputString + "-";
-    }
-    
-}
-
-void deBounce()
-{
-  delay(debounceWaitTime); // wait for a bit
-  if (inputSignal==1 and modelState==0){ // if the input signal is still 1, only then update the model
-       keyDown();
-  }
 }
 
 void newWord()
@@ -155,7 +148,7 @@ void evaluateLetter()
   } else if (inputString=="-"){
       Keyboard.press(KEY_T);
       Keyboard.release(KEY_T);
-  } else if `(inputString=="..-"){
+  } else if (inputString=="..-"){
       Keyboard.press(KEY_U);
       Keyboard.release(KEY_U);
   } else if (inputString=="...-"){
