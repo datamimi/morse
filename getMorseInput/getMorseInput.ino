@@ -14,7 +14,7 @@ String inputString = ""; // initialise input string
 
 unsigned long downTime = 0; // records the start time of state change
 unsigned long upTime = 0; // records the end time of state change
-unsigned long timeNow = 0; // records the current time 
+unsigned long timeNow = 0; // records the current time
 unsigned long changeDuration = 0; // records the duration of state change
 unsigned long pauseDuration = 0; // records the duration of the last pause
 
@@ -27,22 +27,22 @@ void setup()
 } // end of setup
 
 void loop()
-{ 
+{
   checkPause();
   // start of IF loop
   if (morseKey.update()){
-    
+
     if (morseKey.risingEdge()) { // if input from key has gone to 1 and model is still 0, update model
 
       keyUp();
-  
+
     } else if (morseKey.fallingEdge()) { // if input from key has gone to 0 and model is still 1, update model
-  
+
       keyDown();
-  
+
     }
   } // end of if update loop
-  
+
 } // end of loop
 
 void keyDown()
@@ -54,7 +54,7 @@ void keyDown()
 void keyUp()
 {
     upTime = millis();
-    changeDuration = upTime-downTime; 
+    changeDuration = upTime-downTime;
     digitalWrite(led, LOW); // switch LED off
 
     if (changeDuration>0 and changeDuration<dashThresh){
@@ -68,11 +68,11 @@ void keyUp()
     }
 
     pauseFlag = 1;
-    
+
 }
 
 void checkPause()
-{   
+{
     timeNow = millis();
     pauseDuration = timeNow-upTime;
 
@@ -80,141 +80,105 @@ void checkPause()
 
       evaluateLetter();
       pauseFlag = 0;
-      
+
     } else if (pauseDuration >= wordThresh and pauseFlag) {
 
       evaluateLetter();
       newWord();
-      pauseFlag = 0; 
-      
+      pauseFlag = 0;
+
     }
+}
+
+void press(var key){
+  Keyboard.press(key);
+  Keyboard.release(key);
 }
 
 void newWord()
 {
-  Keyboard.press(KEY_SPACE);
-  Keyboard.release(KEY_SPACE);
+  press(KEY_SPACE);
 }
 
 void evaluateLetter()
 {
 
   if (inputString==".-") {
-      Keyboard.press(KEY_A);
-      Keyboard.release(KEY_A);
+      press(KEY_A);
   } else if (inputString=="-..."){
-      Keyboard.press(KEY_B);
-      Keyboard.release(KEY_B);
+      press(KEY_B);
   } else if (inputString == "-.-."){
-      Keyboard.press(KEY_C);
-      Keyboard.release(KEY_C);
+      press(KEY_C);
   } else if (inputString=="-.."){
-      Keyboard.press(KEY_D);
-      Keyboard.release(KEY_D);
+      press(KEY_D);
   } else if (inputString=="."){
-      Keyboard.press(KEY_E);
-      Keyboard.release(KEY_E);
+      press(KEY_E);
   } else if (inputString=="..-."){
-      Keyboard.press(KEY_F);
-      Keyboard.release(KEY_F);
+      press(KEY_F);
   } else if (inputString=="--."){
-      Keyboard.press(KEY_G);
-      Keyboard.release(KEY_G);
+      press(KEY_G);
   } else if (inputString=="...."){
-      Keyboard.press(KEY_H);
-      Keyboard.release(KEY_H);
+      press(KEY_H);
   } else if (inputString==".."){
-      Keyboard.press(KEY_I);
-      Keyboard.release(KEY_I);
+      press(KEY_I);
   } else if (inputString==".---"){
-      Keyboard.press(KEY_J);
-      Keyboard.release(KEY_J);
+      press(KEY_J);
   } else if (inputString=="-.-"){
-      Keyboard.press(KEY_K);
-      Keyboard.release(KEY_K);
+      press(KEY_K);
   } else if (inputString==".-.."){
-      Keyboard.press(KEY_L);
-      Keyboard.release(KEY_L);
+      press(KEY_L);
   } else if (inputString=="--"){
-      Keyboard.press(KEY_M);
-      Keyboard.release(KEY_M);
+      press(KEY_M);
   } else if (inputString=="-."){
-      Keyboard.press(KEY_N);
-      Keyboard.release(KEY_N);
+      press(KEY_N);
   } else if (inputString=="---"){
-      Keyboard.press(KEY_O);
-      Keyboard.release(KEY_O);
+      press(KEY_O);
   } else if (inputString==".--."){
-      Keyboard.press(KEY_P);
-      Keyboard.release(KEY_P);
+      press(KEY_P);
   } else if (inputString=="--.-"){
-      Keyboard.press(KEY_Q);
-      Keyboard.release(KEY_Q);
+      press(KEY_Q);
   } else if (inputString==".-."){
-      Keyboard.press(KEY_R);
-      Keyboard.release(KEY_R);
+      press(KEY_R);
   } else if (inputString=="..."){
-      Keyboard.press(KEY_S);
-      Keyboard.release(KEY_S);
+      press(KEY_S);
   } else if (inputString=="-"){
-      Keyboard.press(KEY_T);
-      Keyboard.release(KEY_T);
+      press(KEY_T);
   } else if (inputString=="..-"){
-      Keyboard.press(KEY_U);
-      Keyboard.release(KEY_U);
+      press(KEY_U);
   } else if (inputString=="...-"){
-      Keyboard.press(KEY_V);
-      Keyboard.release(KEY_V);
+      press(KEY_V);
   } else if (inputString==".--"){
-      Keyboard.press(KEY_W);
-      Keyboard.release(KEY_W);
+      press(KEY_W);
   } else if (inputString=="-..-"){
-      Keyboard.press(KEY_X);
-      Keyboard.release(KEY_X);
+      press(KEY_X);
   } else if (inputString=="-.--"){
-      Keyboard.press(KEY_Y);
-      Keyboard.release(KEY_Y);
+      press(KEY_Y);
   } else if (inputString=="--.."){
-      Keyboard.press(KEY_Z);
-      Keyboard.release(KEY_Z);
+      press(KEY_Z);
   } else if (inputString==".----"){
-      Keyboard.press(KEY_1);
-      Keyboard.release(KEY_1);
+      press(KEY_1);
   } else if (inputString=="..---"){
-      Keyboard.press(KEY_2);
-      Keyboard.release(KEY_2);
+      press(KEY_2);
   } else if (inputString=="...--"){
-      Keyboard.press(KEY_3);
-      Keyboard.release(KEY_3);
+      press(KEY_3);
   } else if (inputString=="....-"){
-      Keyboard.press(KEY_4);
-      Keyboard.release(KEY_4);
+      press(KEY_4);
   } else if (inputString=="....."){
-      Keyboard.press(KEY_5);
-      Keyboard.release(KEY_5);
+      press(KEY_5);
   } else if (inputString=="-...."){
-      Keyboard.press(KEY_6);
-      Keyboard.release(KEY_6);
+      press(KEY_6);
   } else if (inputString=="--..."){
-      Keyboard.press(KEY_7);
-      Keyboard.release(KEY_7);
+      press(KEY_7);
   } else if (inputString=="---.."){
-      Keyboard.press(KEY_8);
-      Keyboard.release(KEY_8);
+      press(KEY_8);
   } else if (inputString=="----."){
-      Keyboard.press(KEY_9);
-      Keyboard.release(KEY_9);
+      press(KEY_9);
   } else if (inputString=="-----"){
-      Keyboard.press(KEY_0);
-      Keyboard.release(KEY_0);
-  } else { 
-      Keyboard.press(KEY_MINUS);
-      Keyboard.release(KEY_MINUS);
+      press(KEY_0);
+  } else {
+      press(KEY_MINUS);
   }
 
   inputString = ""; // re-initialise inputString ready for new letter
 
 }
-
-
-
