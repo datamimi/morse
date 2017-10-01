@@ -57,7 +57,7 @@ void keyUp()
     changeDuration = upTime-downTime;
     digitalWrite(led, LOW); // switch LED off
 
-    if (changeDuration>0 and changeDuration<dashThresh){
+    if (changeDuration>0 and changeDuration<dashThresh) {
       inputString = inputString + ".";
       Serial.println("DOT");
 
@@ -90,7 +90,7 @@ void checkPause()
     }
 }
 
-void press(var key){
+void press(string key){
   Keyboard.press(key);
   Keyboard.release(key);
 }
@@ -102,81 +102,81 @@ void newWord()
 
 void evaluateLetter()
 {
-
-  if (inputString==".-") {
+  switch (inputString) {
+    case ".-":
       press(KEY_A);
-  } else if (inputString=="-..."){
-      press(KEY_B);
-  } else if (inputString == "-.-."){
-      press(KEY_C);
-  } else if (inputString=="-.."){
-      press(KEY_D);
-  } else if (inputString=="."){
-      press(KEY_E);
-  } else if (inputString=="..-."){
-      press(KEY_F);
-  } else if (inputString=="--."){
-      press(KEY_G);
-  } else if (inputString=="...."){
-      press(KEY_H);
-  } else if (inputString==".."){
-      press(KEY_I);
-  } else if (inputString==".---"){
-      press(KEY_J);
-  } else if (inputString=="-.-"){
-      press(KEY_K);
-  } else if (inputString==".-.."){
-      press(KEY_L);
-  } else if (inputString=="--"){
-      press(KEY_M);
-  } else if (inputString=="-."){
-      press(KEY_N);
-  } else if (inputString=="---"){
-      press(KEY_O);
-  } else if (inputString==".--."){
-      press(KEY_P);
-  } else if (inputString=="--.-"){
-      press(KEY_Q);
-  } else if (inputString==".-."){
-      press(KEY_R);
-  } else if (inputString=="..."){
-      press(KEY_S);
-  } else if (inputString=="-"){
-      press(KEY_T);
-  } else if (inputString=="..-"){
-      press(KEY_U);
-  } else if (inputString=="...-"){
-      press(KEY_V);
-  } else if (inputString==".--"){
-      press(KEY_W);
-  } else if (inputString=="-..-"){
-      press(KEY_X);
-  } else if (inputString=="-.--"){
-      press(KEY_Y);
-  } else if (inputString=="--.."){
-      press(KEY_Z);
-  } else if (inputString==".----"){
-      press(KEY_1);
-  } else if (inputString=="..---"){
-      press(KEY_2);
-  } else if (inputString=="...--"){
-      press(KEY_3);
-  } else if (inputString=="....-"){
-      press(KEY_4);
-  } else if (inputString=="....."){
-      press(KEY_5);
-  } else if (inputString=="-...."){
-      press(KEY_6);
-  } else if (inputString=="--..."){
-      press(KEY_7);
-  } else if (inputString=="---.."){
-      press(KEY_8);
-  } else if (inputString=="----."){
-      press(KEY_9);
-  } else if (inputString=="-----"){
-      press(KEY_0);
-  } else {
-      press(KEY_MINUS);
+    case "-...":
+        press(KEY_B);
+    case "-.-.":
+        press(KEY_C);
+    case "-..":
+        press(KEY_D);
+    case ".":
+        press(KEY_E);
+    case "..-.":
+        press(KEY_F);
+    case "--.":
+        press(KEY_G);
+    case "....":
+        press(KEY_H);
+    case "..":
+        press(KEY_I);
+    case ".---":
+        press(KEY_J);
+    case "-.-":
+        press(KEY_K);
+    case ".-..":
+        press(KEY_L);
+    case "--":
+        press(KEY_M);
+    case "-.":
+        press(KEY_N);
+    case "---":
+        press(KEY_O);
+    case ".--.":
+        press(KEY_P);
+    case "--.-":
+        press(KEY_Q);
+    case ".-.":
+        press(KEY_R);
+    case "...":
+        press(KEY_S);
+    case "-":
+        press(KEY_T);
+    case "..-":
+        press(KEY_U);
+    case "...-":
+        press(KEY_V);
+    case ".--":
+        press(KEY_W);
+    case "-..-":
+        press(KEY_X);
+    case "-.--":
+        press(KEY_Y);
+    case "--..":
+        press(KEY_Z);
+    case ".----":
+        press(KEY_1);
+    case "..---":
+        press(KEY_2);
+    case "...--":
+        press(KEY_3);
+    case "....-":
+        press(KEY_4);
+    case ".....":
+        press(KEY_5);
+    case "-....":
+        press(KEY_6);
+    case "--...":
+        press(KEY_7);
+    case "---..":
+        press(KEY_8);
+    case "----.":
+        press(KEY_9);
+    case "-----":
+        press(KEY_0);
+    default:
+        press(KEY_MINUS);
   }
 
   inputString = ""; // re-initialise inputString ready for new letter
