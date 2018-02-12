@@ -14,3 +14,11 @@ Timings between characters and words are currently hardcoded in ms. This isn't h
 #### What do I need to replicate this?
 
 You'll need a Teensy 3.2 and a physical Morse key. I've configured my Teensy so one output from the Morse key is connected to Pin 7, and the other is connected to a ground pin.
+
+#### Coverage
+
+Some lovely folks on Reddit and at Hackaday liked this project quite a bit. You can find the corresponding posts here:
+
+https://www.reddit.com/r/DIY/comments/73gfu8/i_turned_my_dads_1950s_morse_key_into_a_usb/
+
+https://hackaday.com/2017/10/03/a-vintage-morse-key-turned-into-usb-keyboard/
